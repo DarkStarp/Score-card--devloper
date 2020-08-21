@@ -378,4 +378,324 @@ for i in range(0,20):
     flow_obj.append(tab2)
     flow_obj.append(tab3)
     flow_obj.append(tab4)
-    # pdf.build(flow_obj)
+    
+    pdf_chart_colors = [
+        HexColor("#0000e5"),
+        HexColor("#1f1feb"),
+        HexColor("#5757f0"),
+        HexColor("#8f8ff5"),
+        HexColor("#c7c7fa"),
+        HexColor("#f5c2c2"),
+        HexColor("#eb8585"),
+        HexColor("#e04747"),
+        HexColor("#d60a0a"),
+        HexColor("#cc0000"),
+        HexColor("#ff0000"),
+        ]
+    def setItems(n, obj, attr, values):
+        m = len(values)
+        i3 = m // n
+        for j in range(n):
+            setattr(obj[j],attr,values[j*i3 % m])
+    def getVerticalBarChart():
+        data=[
+            
+            (df2.iloc [i,38 :43 ])
+        ]
+        chart=VerticalBarChart()
+        chart.data=data
+        chart.valueAxis.valueMax=90
+        chart.valueAxis.valueMin=0
+        chart.valueAxis.valueStep=10
+        chart.x=5
+        chart.y=5
+        chart.height=100
+        chart.width=240
+        chart.strokeColor=colors.black
+        chart.fillColor=colors.pink
+        chart.categoryAxis.categoryNames=['Q1','Q2','Q3','Q4','Q5']
+        title=String(
+        50,120,
+        'Time (sec)',
+        fontSize =14)
+        
+        drawing=Drawing(240,120)
+        drawing.add(title)
+        drawing.add(chart)
+        return drawing
+
+    def add_legend(draw_obj, chart, data):
+        #chart=Pie();
+        legend = Legend()
+        legend.alignment = 'left'
+        legend.x = 10
+        legend.y = 70
+        draw_obj=chart
+        legend.colorNamePairs = Auto(draw_obj=chart)
+        
+    def getPieChart():  
+        
+        legend = Legend()
+        a=df2.iloc[i,38]
+        b=df2.iloc[i,39]
+        c=df2.iloc[i,40]
+        d=df2.iloc[i,41]
+        e=df2.iloc[i,42]
+        data=[a,b,c,d,e]
+        
+        drawing = Drawing(width=400, height=200)
+        my_title = String(81, 37, 'Time Spend as the Function of Total Time', fontSize=14)
+        pie = Pie()
+        pie.sideLabels = True
+        pie.slices.popout            = 2
+        pie.x = 135
+        pie.y = 55
+        pie.data = data
+        s=a+b+c+d+e
+        t=round(a*100/s)
+        u=round(b*100/s)
+        v=round(c*100/s)
+        x=round(d*100/s)
+        z=round(e*100/s)
+        h=[t,u,v,x,z]
+        d=[]
+        l=["%.2f" % i4 for i4 in h]
+        for i4 in l:
+            k = i4.split(".")
+            d.append(k[0])
+        e=[]
+        j=0
+        for i4 in d:
+            w=i4+"%"
+            j=j+1
+            if j==1:
+                w=w+" (Q1)"
+            if j==2:
+                w=w+" (Q2)"
+            if j==3:
+                w=w+" (Q3)"
+            if j==4:
+                w=w+" (Q4)"
+            if j==5:
+                w=w+" (Q5)"
+            e.append(w)
+        pie.labels = [letter for letter in e]
+        pie.slices.strokeWidth = 0.5
+        drawing.add(my_title)
+        drawing.add(pie)
+        n = len(pie.data)
+        setItems(n,pie.slices,'fillColor',pdf_chart_colors)
+        legend.colorNamePairs = [(pie.slices[i4].fillColor, (pie.labels[i4][0:20], '%0.2f' % pie.data[i4])) for i4 in range(n)]
+        add_legend(drawing, pie, data)
+        
+        return drawing
+    def get2PieChart():
+        legend = Legend()
+        a=df2.iloc[i,13]
+        b=df2.iloc[i,14]
+        c=df2.iloc[i,15]
+        d=df2.iloc[i,16]
+        e=df2.iloc[i,17]
+        da=[a,b,c,d,e]
+        
+        x=0
+        y=0
+        for i5 in da:
+            if i5=="Attempted":
+                x=x+1
+            else:
+                y=y+1
+        data=[x,y]
+        u=round(x*100/5)
+        v=round(y*100/5)
+        h=[u,v]
+        d=[]
+        l=["%.2f" % i5 for i5 in h]
+        for i5 in l:
+            k = i5.split(".")
+            d.append(k[0])
+        e=[]
+        j=0
+        for i5 in d:
+            #w=i5+"%"
+            j=j+1
+            w=i5+"%"
+            if j==1:
+                w=w+" (Attempted)"
+            if j==2:
+                w=w+" (Unattempted)"
+            e.append(w)
+        drawing = Drawing(width=400, height=200)
+        my_title = String(170, 40, 'Attempts', fontSize=14)
+        pie = Pie()
+        pie.sideLabels = True
+        pie.slices.popout            = 3
+        pie.x = 140
+        pie.y = 60
+        pie.data = data
+        pie.labels = [letter for letter in e]
+        pie.slices.strokeWidth = 0.5
+        drawing.add(my_title)
+        n = len(pie.data)
+        setItems(n,pie.slices,'fillColor',pdf_chart_colors)
+        legend.colorNamePairs = [(pie.slices[i5].fillColor, (pie.labels[i5][0:20], '%0.2f' % pie.data[i5])) for i5 in range(n)]
+        drawing.add(pie)
+        add_legend(drawing, pie, data)
+        return drawing
+
+    def get3PieChart():
+        legend = Legend()
+        a=df2.iloc[i,13]
+        b=df2.iloc[i,14]
+        c=df2.iloc[i,15]
+        d=df2.iloc[i,16]
+        e=df2.iloc[i,17]
+        da=[a,b,c,d,e]
+        
+        x=0
+        y=0
+        for i6 in da:
+            if i6=="Attempted":
+                x=x+1
+        a=df2.iloc[i,28]
+        b=df2.iloc[i,29]
+        c=df2.iloc[i,30]
+        d=df2.iloc[i,31]
+        e=df2.iloc[i,32]
+        da=[a,b,c,d,e]
+        for i7 in da:
+            if i7=="Correct":
+                y=y+1
+        
+        data=[y,x-y]
+        u=round(y*100/x)
+        v=round((x-y)*100/x)
+        h=[u,v]
+        d=[]
+        l=["%.2f" % i7 for i7 in h]
+        for i7 in l:
+            k = i7.split(".")
+            d.append(k[0])
+        e=[]
+        j=0
+        for i7 in d:
+            w=i7+"%"
+            j=j+1
+            w=i7+"%"
+            if j==1:
+                w=w+" (Correct)"
+            if j==2:
+                w=w+" (Incorrect)"
+            e.append(w)
+        drawing = Drawing(width=400, height=200)
+        my_title = String(80, -20, 'Accuracy from attemptes questions', fontSize=14)
+        pie = Pie()
+        pie.sideLabels = True
+        pie.slices.popout            = 3
+        pie.x = 150
+        pie.y = 10
+        pie.data = data
+        pie.labels = [letter for letter in e]
+        pie.slices.strokeWidth = 0.5
+        drawing.add(my_title)
+        n = len(pie.data)
+        setItems(n,pie.slices,'fillColor',pdf_chart_colors)
+        legend.colorNamePairs = [(pie.slices[i7].fillColor, (pie.labels[i7][0:20], '%0.2f' % pie.data[i7])) for i7 in range(n)]
+        drawing.add(pie)
+        add_legend(drawing, pie, data)
+        return drawing
+
+    def get4PieChart():  
+        
+        legend = Legend()
+        a=df2.iloc[i,13]
+        b=df2.iloc[i,14]
+        c=df2.iloc[i,15]
+        d=df2.iloc[i,16]
+        e=df2.iloc[i,17]
+        da=[a,b,c,d,e]
+        
+        x=0
+        y=0
+        for i9 in da:
+            if i9=="Attempted":
+                x=x+1
+        a=df2.iloc[i,28]
+        b=df2.iloc[i,29]
+        c=df2.iloc[i,30]
+        d=df2.iloc[i,31]
+        e=df2.iloc[i,32]
+        da=[a,b,c,d,e]
+        for i9 in da:
+            if i9=="Correct":
+                y=y+1
+        z=5-x
+        o=x-y
+        data=[z,y,o]
+        s=z+y+o
+        u=round(z*100/s)
+        v=round(y*100/s)
+        r=round(o*100/s)
+        h=[u,v,r]
+        d=[]
+        l=["%.2f" % i9 for i9 in h]
+        for i9 in l:
+            k = i9.split(".")
+            d.append(k[0])
+        e=[]
+        j=0
+        for i9 in d:
+            w=i9+"%"
+            j=j+1
+            w=i9+"%"
+            if j==1:
+                w=w+" (Unattempted)"
+            if j==2:
+                w=w+" (Correct)"
+            if j==3:
+                w=w+" (Incorrect)"
+            e.append(w)
+        drawing = Drawing(width=400, height=200)
+        my_title = String(80, -20, 'Overall Performance against the test', fontSize=14)
+        pie = Pie()
+        pie.sideLabels = True
+        pie.slices.popout            = 3
+        pie.x = 150
+        pie.y = 10
+        pie.data = data
+        pie.labels = [letter for letter in e]
+        pie.slices.strokeWidth = 0.5
+        drawing.add(my_title)
+        drawing.add(pie)
+        n = len(pie.data)
+        setItems(n,pie.slices,'fillColor',pdf_chart_colors)
+        legend.colorNamePairs = [(pie.slices[i9].fillColor, (pie.labels[i9][0:20], '%0.2f' % pie.data[i9])) for i9 in range(n)]
+        add_legend(drawing, pie, data)
+        
+        return drawing
+        
+        
+    barChart=getVerticalBarChart()
+    pieChart=getPieChart()
+    pieChart3=get3PieChart()
+    pieChart2=get2PieChart()
+    pieChart4=get4PieChart()
+    table=Table([[barChart]],colWidths=[200,200])
+    ta=Table([[pieChart,pieChart2],[pieChart3,pieChart4]],colWidths=[300,300],rowHeights=[100,100])
+    table.setStyle([
+        
+        ("VALIGN",(0,0),(-1,-1),"TOP"),
+    ("ALIGN",(0,0),(-1,-1),"CENTER"),
+    ])
+    ta.setStyle([
+        
+        ("VALIGN",(0,0),(-1,-1),"TOP"),
+        ("ALIGN",(0,0),(-1,-1),"CENTER"),
+    ])
+    style8= TableStyle([('TOPPADDING',(0,0),(-1,-1),30),('BOTTOMPADDING',(0,0),(-1,-1),0)])
+    ta.setStyle(style8)
+    table.setStyle(style8)
+    flow_obj.append(table)
+    flow_obj.append(ta)
+    pdf.build(flow_obj)
+    
