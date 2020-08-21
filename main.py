@@ -254,3 +254,128 @@ for k in range(0,20):
     u=0
 df2['percentile']=asd
 
+for i in range(0,20):
+    performance = pd.DataFrame()
+    Question=['Question No.','Q1','Q2','Q3','Q4','Q5']
+    Time_Spent_on_Question = ['Time Spent (sec)']
+    Score_if_Correct = ['Score if Correct',2,2,2,2,2]
+    Score_if_Incorrect = ['Score if Incorrect',-1,-1,-1,-1,-1]
+    Attempt_Status = ['Attempt Status']
+    What_You_Marked = ['What You Marked']
+    Correct_Answer = ['Correct Answer']
+    Outcome = ['Outcome']
+    Your_Score = ['Your Score']
+    tq = 38
+    ats = 13
+    wym = 18
+    caa = 23
+    ot = 28
+    ysa = 33
+    for j in range(0,5):
+        Time_Spent_on_Question.append(df2._get_value(i,tq,takeable=True))
+        Attempt_Status.append(df2._get_value(i,ats,takeable=True))
+        What_You_Marked.append(df2._get_value(i,wym,takeable = True))
+        Correct_Answer.append(df2._get_value(i,caa,takeable = True))
+        Outcome.append(df2._get_value(i,ot,takeable = True))
+        Your_Score.append(df2._get_value(i,ysa,takeable = True))
+        tq=tq+1
+        ats=ats+1
+        wym=wym+1
+        caa=caa+1
+        ot=ot+1
+        ysa=ysa+1
+        
+    performance = performance.assign(**{'Question No.':Question,'Time Spent (sec)':Time_Spent_on_Question,'Score if Correct':Score_if_Correct,'Score if Incorrect': Score_if_Incorrect, 'Attempt Status':Attempt_Status,
+                                        'What you Marked': What_You_Marked, 'Correct Answer':Correct_Answer, 'Outcome':Outcome,'Your_Score':Your_Score})
+    
+    poi = []
+    poiuy = []
+    poi.append(df2._get_value(i,1,takeable = True))
+    poi.append(df2._get_value(i,3,takeable = True))
+    poi.append(df2._get_value(i,5,takeable = True))
+    poi.append(df2._get_value(i,7,takeable = True))
+    poi.append(df2._get_value(i,9,takeable = True))
+    poiuy.append(df2._get_value(i,2,takeable = True))
+    poiuy.append(df2._get_value(i,4,takeable = True))
+    poiuy.append(df2._get_value(i,6,takeable = True))
+    poiuy.append(df2._get_value(i,8,takeable = True))
+    poiuy.append(df2._get_value(i,10,takeable = True))
+    lst = [['Name of Candidate', 'Grade','School Name','City of Residence','Country of Residence'],poi,['Registration No.','Gender','Date of Birth','Date of test','Extra time assistance'],poiuy]
+    details=pd.DataFrame(lst)
+    details =details.T
+
+    qwe=str(i)
+    qwe=qwe+'.pdf'
+    
+    pdf=SimpleDocTemplate(qwe,pagesize=letter, rightMargin=30,leftMargin=30, topMargin=5,bottomMargin=18)
+    #pdf.translate(inch,inch)
+    flow_obj=[]
+    dataa = [['Report Card']]
+    t=Table(dataa)
+    style=TableStyle([('TEXTCOLOR',(0,0),(-1,-1),colors.red),('FONTNAME',(0,0),(-1,-1),'Courier-Bold'),('ALIGN',(0,0),(-1,-1),'CENTER'),('FONTSIZE',(0,0),(-1,-1),30),('BOTTOMPADDING',(0,0),(-1,-1),20)] )
+    t.setStyle(style)
+    kl= 'pics' + "\\" + str(i+1)
+    # kl = kl + str(i+1)
+    kl=kl+'.jpg'
+    #gh='C:\Users\hp\Downloads\Pics\Pics\'+kl+'.jpg'
+    im = Image(r'pics\logo.png',100,100)
+    m = Image(kl,100,120)
+    T=Table([[im,m]],colWidths=[335,230])
+    sst = TableStyle([('ALIGN',(0,0),(-1,-1),'RIGHT'),('BOTTOMPADDING',(0,0),(-1,-1),22)])
+    T.setStyle(sst)
+
+
+    Tab = Table(np.array(details).tolist())
+    st = TableStyle([('ALIGN',(0,0),(-1,-1),'LEFT'),('FONTNAME',(0,0),(0,-1),'Times-BoldItalic'),('FONTSIZE',(0,0),(-1,-1),11),('FONTNAME',(2,0),(2,-1),'Times-BoldItalic'),('BOTTOMPADDING',(0,0),(-1,-1),10),
+                    ('TOPPADDING',(0,0),(-1,-1),14),('LEFTPADDING',(0,0),(-1,-1),55),('BOX',(0,0),(-1,-1),2,colors.black),('RIGHTPADDING',(0,0),(-1,-1),45),('BOX',(0,0),(1,-1),2,colors.black)])
+    Tab.setStyle(st)
+
+
+    tab1 = Table([['Student Performance']])
+    style4 = TableStyle([('FONTNAME',(0,0),(-1,-1),'Courier-Bold'),('FONTSIZE',(0,0),(-1,-1),16), ('TOPPADDING',(0,0),(-1,-1),25),('TEXTCOLOR',(0,0),(-1,-1),colors.orange),('BOTTOMPADDING',(0,0),(-1,-1),25)])
+    tab1.setStyle(style4)
+
+
+    tab2 = Table(np.array(performance).tolist())
+    style5 = TableStyle([('ALIGN',(0,0),(-1,-1),'CENTER'),('FONTNAME',(0,0),(-1,0),'Times-BoldItalic'),('FONTSIZE',(0,0),(-1,-1),8.5),('TOPPADDING',(0,0),(-1,-1),15),('BOX',(0,0),(-1,-1),1.5,colors.black),('BOTTOMPADING',(0,0),(-1,-1),50),
+                    ('GRID',(0,1),(-1,-1),2,colors.black),('BACKGROUND',(0,0),(8,0),colors.green) ])
+    tab2.setStyle(style5)
+    rownum = len(performance)
+    for k in range(1, rownum):
+        if k%2 == 0:
+            bc = colors.burlywood
+        else:
+            bc = colors.beige
+        ts = TableStyle([('BACKGROUND',(0,k),(-1,k),bc)])
+        tab2.setStyle(ts)
+
+        
+
+    tab3 = Table([['']])
+    style6 = TableStyle([('BACKGROUND',(0,0),(-1,-1),colors.transparent),('TOPPADDING',(0,0),(-1,-1),10),('BOTTOMPADDING',(0,0),(-1,-1),10)])
+    tab3.setStyle(style6)
+
+
+    a=df2.iloc[i,33]
+    b=df2.iloc[i,34]
+    c=df2.iloc[i,35]
+    d=df2.iloc[i,36]
+    e=df2.iloc[i,37]
+    tosc=a+b+c+d+e
+    #total score
+    ds=df2.iloc[i,43]
+
+
+    tab4 = Table([['Total Score',tosc],['Your Overall\n Percentile',ds]],colWidths = [100,100])
+    style7 = TableStyle([('BACKGROUND',(0,0),(-1,-1),colors.pink),('TOPPADDING',(0,0),(-1,-1),10),('BOTTOMPADDING',(0,0),(-1,-1),10),('LEFTPADDING',(0,0),(-1,-1),40),('RIGHTPADDING',(0,0),(-1,-1),1)])
+    tab4.setStyle(style7)
+
+
+    flow_obj.append(t)
+    flow_obj.append(T)
+    flow_obj.append(Tab)
+    flow_obj.append(tab1)
+    flow_obj.append(tab2)
+    flow_obj.append(tab3)
+    flow_obj.append(tab4)
+    pdf.build(flow_obj)
