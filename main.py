@@ -304,7 +304,7 @@ for i in range(0,20):
     details=pd.DataFrame(lst)
     details =details.T
 
-    qwe=str(i)
+    qwe="pdf's-file" + "\\" + str(i)
     qwe=qwe+'.pdf'
     
     pdf=SimpleDocTemplate(qwe,pagesize=letter, rightMargin=30,leftMargin=30, topMargin=5,bottomMargin=18)
